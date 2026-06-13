@@ -36,6 +36,8 @@ To illustrate the approach safely, the pipeline was re-run on randomly generated
 
 ![Sample matched and non-matched record pairs with Dice similarity scores](securelink_sample_matches.png)
 
+The demo is reproducible: see [securelink_xgboost_demo.py](securelink_xgboost_demo.py), which generates the synthetic data and produces both figures above.
+
 ## Full write-up
 
 [Download the full project highlight (PDF)](SecureLink_Project_Highlight.pdf)
