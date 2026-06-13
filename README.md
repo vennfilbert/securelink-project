@@ -42,13 +42,13 @@ The demo is reproducible: see [securelink_xgboost_demo.py](securelink_xgboost_de
 
 [Download the full project highlight (PDF)](SecureLink_Project_Highlight.pdf)
 
-## Technical notes
+## Model design and decisions
 
-- **Task:** binary classification, 2 classes (match / non-match).
-- **Class imbalance:** record-pair data is heavily skewed toward non-matches. For the Bloom filter model, non-matches were downsampled to a 3:1 ratio against matches before training.
-- **Features:** 200 SVD components for the raw and LDP models; a single Dice-similarity feature for the Bloom filter model.
-- **Validation:** 70/30 train/test split with a fixed random seed; evaluated on Accuracy, Precision, Recall, and F1.
-- **Hyperparameters:** XGBoost defaults used as a deliberate baseline. A next iteration would tune scale_pos_weight (for the imbalance), max_depth, learning_rate, and n_estimators via grid or randomised search.
+The task was framed as binary classification: for each pair of records, predict whether they refer to the same entity (match) or not (non-match). Because real linkage data contains far more non-matching pairs than true matches, the Bloom filter dataset was rebalanced to a 3:1 ratio of non-matches to matches before training, so the model would not simply default to predicting "non-match".
+
+Feature design differed by configuration. The raw and LDP models used 200 numeric features (100 Truncated SVD components from each of the two text fields), while the Bloom filter model used a single feature: the Dice similarity between the two encoded records. All configurations were trained on over a thousand record pairs and evaluated on a 70/30 train/test split with a fixed random seed, reported on Accuracy, Precision, Recall, and F1.
+
+XGBoost was run with default hyperparameters as a deliberate baseline, since the aim was to compare the three privacy configurations on equal footing rather than chase peak accuracy. A clear next step would be tuning scale_pos_weight to reflect the class imbalance, alongside max_depth, learning_rate, and n_estimators via grid or randomised search.
 
 ## Tools and skills
 
